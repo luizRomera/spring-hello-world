@@ -1,3 +1,5 @@
+def jarFileName = "target/demo-0.0.1-SNAPSHOT.jar"
+
 pipeline {
     agent {
         label 'slave'
@@ -41,7 +43,7 @@ pipeline {
         stage('Stop Previous Process') {
             steps {
                 script {
-                    sh 'pkill -f "java -jar target/demo-0.0.1-SNAPSHOT.jar" || true'
+                    sh 'pkill -f "java -jar ${jarFileName}" || true'
                 }
             }
         }
@@ -50,8 +52,7 @@ pipeline {
         stage('Run Application') {
             steps {
                 script {
-                    def jarFileName = "target/demo-0.0.1-SNAPSHOT.jar"
-                    sh "java -Dspring.backgroundpreinitializer.ignore=true -Dserver.port=8083 -jar ${jarFileName}"
+                    sh "java -Dspring.backgroundpreinitializer.ignore=true -Dserver.port=8083 -jar ${jarFileName} > /dev/null 2>&1 &"
                 }
             }
         }
