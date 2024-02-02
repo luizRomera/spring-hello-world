@@ -31,6 +31,7 @@ pipeline {
             steps {
                 catchError(buildResult: 'FAILURE', message: 'Failed to build') {
                     script {
+                        sh 'rm -rf ~/.m2'
                         sh 'mvn clean install'
                     }
                 }
