@@ -65,6 +65,8 @@ pipeline {
 
         failure {
             echo 'Build failed. Check the logs for more information.'
+            sh 'rm -rf ~/.m2'
+            sh 'rm -rf *'
         }
     }
 }
