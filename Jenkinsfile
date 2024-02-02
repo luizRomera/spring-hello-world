@@ -21,6 +21,7 @@ pipeline {
                 catchError(buildResult: 'FAILURE', message: 'Failed to build') {
                     script {
                         sh 'mvn -v'
+                        sh 'java -version'
                     }
                 }
             }
