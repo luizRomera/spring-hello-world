@@ -52,7 +52,7 @@ pipeline {
         stage('Run Application') {
             steps {
                 script {
-                    sh "java -Dspring.backgroundpreinitializer.ignore=true -Dserver.port=8083 -jar ${jarFileName} > /dev/null 2>&1 &"
+                    sh "java -Dserver.port=8083 -jar ${jarFileName} > /dev/null 2>&1 &"
                 }
             }
         }
@@ -66,6 +66,7 @@ pipeline {
 
         failure {
             echo 'Build failed. Check the logs for more information.'
+            echo 'Cleaning the environment.'
             sh 'rm -rf ~/.m2'
             sh 'rm -rf *'
         }
