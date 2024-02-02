@@ -4,21 +4,6 @@ pipeline {
     }
 
     stages {
-        stage('Checkout') {
-            steps {
-                script {
-                    withCredentials([sshUserPrivateKey(credentialsId: 'e317e956-79e1-42eb-a61e-0364bb55e74b', keyFileVariable: 'GIT_SSH_KEY', passphraseVariable: '', usernameVariable: 'git')]) {
-                        checkout([$class: 'GitSCM', branches: [
-                            [name: '*/main']
-                        ], doGenerateSubmoduleConfigurations: false, extensions: [
-                            [$class: 'RelativeTargetDirectory', relativeTargetDir: '']
-                        ], submoduleCfg: [], userRemoteConfigs: [
-                            [credentialsId: 'e317e956-79e1-42eb-a61e-0364bb55e74b', url: 'git@github.com:luizRomera/spring-hello-world.git']
-                        ]])
-                    }
-                }
-            }
-        }
 
         stage('Build') {
             steps {
@@ -48,6 +33,25 @@ pipeline {
             steps {
                 script {
                     archiveArtifacts "target/*.jar"
+                }
+            }
+        }
+
+        
+        stage('Stop Previous Process') {
+            steps {
+                script {
+                    sh 'pkill -f "java -jar demo-0.0.1-SNAPSHOT.jar" || true'
+                }
+            }
+        }
+
+        
+        stage('Run Application') {
+            steps {
+                script {
+                    def jarFileName = 'java -jar demo-0.0.1-SNAPSHOT.jar'
+                    sh "java -Dspring.backgroundpreinitializer.ignore=true -jar ${jarFileName}"
                 }
             }
         }
