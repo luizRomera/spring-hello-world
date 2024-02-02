@@ -20,19 +20,9 @@ pipeline {
             }
         }
 
-        stage('check mvn') {
-            steps {
-                script {
-                    sh 'mvn -v'
-                    sh 'java -version'
-                }
-            }
-        }
-
         stage('Build') {
             steps {
                 script {
-                    sh 'rm -rf ~/.m2'
                     sh 'mvn clean install'
                 }
             }
@@ -57,7 +47,7 @@ pipeline {
         stage('Publish Artifact') {
             steps {
                 script {
-                    sh 'cp target/hello-world.jar /tmp'
+                    archiveArtifacts "target/*.jar"
                 }
             }
         }
