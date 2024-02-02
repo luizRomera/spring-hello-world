@@ -43,7 +43,7 @@ pipeline {
         stage('Stop Previous Process') {
             steps {
                 script {
-                    sh 'pkill -f "java -jar ${jarFileName}" || true'
+                    sh "pkill -f \"java -jar ${jarFileName}\" || true"
                 }
             }
         }
