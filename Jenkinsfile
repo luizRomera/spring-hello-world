@@ -16,6 +16,16 @@ pipeline {
             }
         }
 
+        stage('check mvn') {
+            steps {
+                catchError(buildResult: 'FAILURE', message: 'Failed to build') {
+                    script {
+                        sh 'mvn -v'
+                    }
+                }
+            }
+        }
+
         stage('Build') {
             steps {
                 catchError(buildResult: 'FAILURE', message: 'Failed to build') {
