@@ -1,10 +1,8 @@
-def jarFileName = "target/demo-0.0.1-SNAPSHOT.jar"
-
 pipeline {
     agent {
         label 'slave'
     }
-
+    
     stages {
 
         stage('Build') {
@@ -35,24 +33,6 @@ pipeline {
             steps {
                 script {
                     archiveArtifacts "target/*.jar"
-                }
-            }
-        }
-
-        
-        stage('Stop Previous Process') {
-            steps {
-                script {
-                    sh "pkill -f \"java -jar ${jarFileName}\" || true"
-                }
-            }
-        }
-
-        
-        stage('Run Application') {
-            steps {
-                script {
-                    sh "java -Dserver.port=8083 -jar ${jarFileName} > /dev/null 2>&1 &"
                 }
             }
         }
