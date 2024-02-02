@@ -7,10 +7,14 @@ pipeline {
         stage('Checkout') {
             steps {
                 script {
-                    catchError(buildResult: 'FAILURE', message: 'Failed to checkout code') {
-                        withCredentials([sshUserPrivateKey(credentialsId: 'e317e956-79e1-42eb-a61e-0364bb55e74b', keyFileVariable: 'GIT_SSH_KEY', passphraseVariable: '', usernameVariable: 'git')]) {
-                            checkout([$class: 'GitSCM', branches: [[name: '*/main']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: '']], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'e317e956-79e1-42eb-a61e-0364bb55e74b', url: 'git@github.com:luizRomera/spring-hello-world.git']]])
-                        }
+                    withCredentials([sshUserPrivateKey(credentialsId: 'e317e956-79e1-42eb-a61e-0364bb55e74b', keyFileVariable: 'GIT_SSH_KEY', passphraseVariable: '', usernameVariable: 'git')]) {
+                        checkout([$class: 'GitSCM', branches: [
+                            [name: '*/main']
+                        ], doGenerateSubmoduleConfigurations: false, extensions: [
+                            [$class: 'RelativeTargetDirectory', relativeTargetDir: '']
+                        ], submoduleCfg: [], userRemoteConfigs: [
+                            [credentialsId: 'e317e956-79e1-42eb-a61e-0364bb55e74b', url: 'git@github.com:luizRomera/spring-hello-world.git']
+                        ]])
                     }
                 }
             }
@@ -18,55 +22,46 @@ pipeline {
 
         stage('check mvn') {
             steps {
-                catchError(buildResult: 'FAILURE', message: 'Failed to build') {
-                    script {
-                        sh 'mvn -v'
-                        sh 'java -version'
-                    }
+                script {
+                    sh 'mvn -v'
+                    sh 'java -version'
                 }
             }
         }
 
         stage('Build') {
             steps {
-                catchError(buildResult: 'FAILURE', message: 'Failed to build') {
-                    script {
-                        sh 'rm -rf ~/.m2'
-                        sh 'mvn clean install'
-                    }
+                script {
+                    sh 'rm -rf ~/.m2'
+                    sh 'mvn clean install'
                 }
             }
         }
 
         stage('Test') {
             steps {
-                catchError(buildResult: 'FAILURE', message: 'Test failures detected') {
-                    script {
-                        sh 'mvn test'
-                    }
+                script {
+                    sh 'mvn test'
                 }
             }
         }
 
         stage('Package') {
             steps {
-                catchError(buildResult: 'FAILURE', message: 'Failed to package') {
-                    script {
-                        sh 'mvn package'
-                    }
+                script {
+                    sh 'mvn package'
                 }
             }
         }
 
         stage('Publish Artifact') {
             steps {
-                catchError(buildResult: 'FAILURE', message: 'Failed to publish artifact') {
-                    script {
-                        sh 'cp target/your-project.jar /path/to/output/directory/'
-                    }
+                script {
+                    sh 'cp target/hello-world.jar /tmp'
                 }
             }
         }
+
     }
 
     post {
