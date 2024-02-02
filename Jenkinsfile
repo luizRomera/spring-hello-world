@@ -8,19 +8,9 @@ pipeline {
             steps {
                 script {
                     catchError(buildResult: 'FAILURE', message: 'Failed to checkout code') {
-                        withCredentials([sshUserPrivateKey(credentialsName: 'jenkins-slave', keyFileVariable: 'GIT_SSH_KEY', passphraseVariable: '', usernameVariable: 'git')]) {
-                            checkout([$class: 'GitSCM', branches: [[name: '*/main']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: '']], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'jenkins-slave', url: 'git@github.com:luizRomera/spring-hello-world.git']]])
+                        withCredentials([sshUserPrivateKey(credentialsId: 'e317e956-79e1-42eb-a61e-0364bb55e74b', keyFileVariable: 'GIT_SSH_KEY', passphraseVariable: '', usernameVariable: 'git')]) {
+                            checkout([$class: 'GitSCM', branches: [[name: '*/main']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: '']], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'e317e956-79e1-42eb-a61e-0364bb55e74b', url: 'git@github.com:luizRomera/spring-hello-world.git']]])
                         }
-                    }
-                }
-            }
-        }
-
-        stage('env') {
-            steps {
-                catchError(buildResult: 'FAILURE', message: 'Failed to print printenv') {
-                    script {
-                        sh 'printenv'
                     }
                 }
             }
