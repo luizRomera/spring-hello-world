@@ -1,4 +1,4 @@
-@Library('ks') _
+@Library('ks-jenkins-shared-library') _
 
 pipeline {
     agent {
