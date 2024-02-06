@@ -43,11 +43,11 @@ pipeline {
 
     post {
         success {
-            post()
+            job_success()
         }
 
         failure {
-            failure()
+            job_fail()
         }
     }
 }
