@@ -1,0 +1,58 @@
+@Library('ks-jenkins-shared-library') _
+
+pipeline {
+    agent {
+        label 'slave'
+        docker {
+            image 'maven:3.9.6-amazoncorretto-17'
+            // args '-v /caminho/local:/caminho/no/container'
+            
+        }
+    }
+    
+    stages {
+
+        stage('Build') {
+            steps {
+                script {
+                    maven_clean_install()
+                }
+            }
+        }
+
+        stage('Test') {
+            steps {
+                script {
+                    maven_test()
+                }
+            }
+        }
+
+        stage('Package') {
+            steps {
+                script {
+                    maven_package()
+                }
+            }
+        }
+
+        stage('Publish Artifact') {
+            steps {
+                script {
+                    archiveArtifacts "target/*.jar"
+                }
+            }
+        }
+
+    }
+
+    post {
+        success {
+            job_success()
+        }
+
+        failure {
+            job_fail()
+        }
+    }
+}
