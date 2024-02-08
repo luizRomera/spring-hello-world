@@ -2,10 +2,10 @@
 
 pipeline {
     agent {        
-        dockerContainer {
+        docker {
+            label 'slave'
             image 'maven:3.9.6-amazoncorretto-17'
             // args '-v /caminho/local:/caminho/no/container'
-            // label 'slave'
         }
     }
     
