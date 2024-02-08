@@ -1,7 +1,7 @@
 @Library('ks-jenkins-shared-library') _
 
 pipeline {
-    agent {
+    dockerContainer {
         label 'slave'
         docker {
             image 'maven:3.9.6-amazoncorretto-17'
