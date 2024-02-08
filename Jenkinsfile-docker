@@ -3,12 +3,15 @@
 pipeline {
     agent {        
         dockerContainer {
-            label 'slave'
-            image 'maven:3.9.6-amazoncorretto-17'
+            dockerHost 'maven-docker-slave'
+            image 'maven:3.9.6-eclipse-temurin-17'
             // args '-v /caminho/local:/caminho/no/container'
         }
     }
-    
+
+    // https://phoenixnap.com/kb/how-to-configure-docker-in-jenkins
+    // http://192.168.0.11:4243/info
+
     stages {
 
         stage('Build') {
