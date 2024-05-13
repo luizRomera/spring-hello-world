@@ -37,6 +37,16 @@ pipeline {
             }
         }
 
+        stage('Sonar') {
+            steps {
+                script {
+                    sh """
+                        mvn clean verify sonar:sonar -Dsonar.projectKey=spring-hello-world -Dsonar.token=sqp_74b6816538009f2b57a9ac7a678a79a1c9c2d950
+                    """
+                }
+            }
+        }        
+
     }
 
     post {
