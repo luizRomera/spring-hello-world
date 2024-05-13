@@ -41,7 +41,7 @@ pipeline {
             steps {
                 script {
                     sh """
-                        mvn clean verify sonar:sonar -Dsonar.projectKey=spring-hello-world -Dsonar.token=sqp_74b6816538009f2b57a9ac7a678a79a1c9c2d950
+                        mvn clean verify sonar:sonar -Dsonar.host.url=http://192.168.0.212:9000 -Dsonar.projectKey=spring-hello-world -Dsonar.token=sqp_74b6816538009f2b57a9ac7a678a79a1c9c2d950
                     """
                 }
             }
